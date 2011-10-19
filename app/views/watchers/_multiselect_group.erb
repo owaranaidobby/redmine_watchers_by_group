@@ -1,3 +1,4 @@
+<%if User.current.groups.size > 0%>
 <%#
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
@@ -6,7 +7,8 @@
 <%= l(:watchers_select_multiple) %>
 <%
 roles=""
-@groups = Group.find(:all, :order => 'lastname').each do |item|
+#@groups = Group.find(:all, :order => 'lastname').each do |item|
+@groups = User.current.groups.each do |item|
 key=item[:lastname]
 value=item.users
 values=Array.new
@@ -25,4 +27,5 @@ end %>
 
 <% content_for :header_tags do %>
   <%= javascript_include_tag "watchers_multisel.js", :plugin => 'redmine_watchers_by_group' %>
+<% end %>
 <% end %>
