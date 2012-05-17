@@ -5,3 +5,6 @@ Allows issue creator to select multiple watchers by group
 = Install
 
 script/plugin install git://github.com/alvila/redmine_watchers_by_group.git
+
+= 
+test comment
