@@ -25,6 +25,15 @@ end %>
   <input type="submit" value="Unselect All" onclick="return uncheckAll('issue[watcher_user_ids][]')" />
 </p>
 
+<%
+  checkboxes = watchers.map do |user|
+    c = issue.watched_by?(user)
+    tag = check_box_tag 'issue[watcher_user_ids][]', user.id, c, :id => nil
+    content_tag 'label', "#{tag} #{h(user)}", :id => "issue_watcher_user_ids_#{user.id}", :class => "floating"
+  end.join
+%>
+<%= checkboxes %>
+
 <% content_for :header_tags do %>
   <%= javascript_include_tag "watchers_multisel.js", :plugin => 'redmine_watchers_by_group' %>
 <% end %>
