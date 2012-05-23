@@ -32,7 +32,7 @@ end %>
     content_tag 'label', "#{tag} #{h(user)}", :id => "issue_watcher_user_ids_#{user.id}", :class => "floating"
   end.join
 %>
-<%= checkboxes %>
+<%= checkboxes if controller.action_name == "show" %>
 
 <% content_for :header_tags do %>
   <%= javascript_include_tag "watchers_multisel.js", :plugin => 'redmine_watchers_by_group' %>
