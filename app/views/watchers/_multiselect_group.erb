@@ -7,18 +7,15 @@
 <%= l(:watchers_select_multiple) %>
 <%
 roles=""
-#@groups = Group.find(:all, :order => 'lastname').each do |item|
 @groups = User.current.groups.each do |item|
-key=item[:lastname]
+key=item.lastname
 value=item.users
-values=Array.new
-value.each do |user|
-values+=[user[:id]]
+values = value.map do |user|
+user.id
 end
 roles+="<option value=\"#{values.join(',')}\">#{key}</option>"
 end %>
-<%= select_tag(:watcher_multiple_group, roles)
-%>
+<%= select_tag(:watcher_multiple_group, roles.html_safe)%>
   <input type="submit" value="Select" onclick="return checkSome('issue[watcher_user_ids][]')" /> |
   <input type="submit" value="Unselect" onclick="return uncheckSome('issue[watcher_user_ids][]')" /> |
   <input type="submit" value="Select All" onclick="return checkAll('issue[watcher_user_ids][]')" /> |
@@ -34,7 +31,7 @@ end %>
 %>
 <%= checkboxes if controller.action_name == "show" %>
 
-<% content_for :header_tags do %>
-  <%= javascript_include_tag "watchers_multisel.js", :plugin => 'redmine_watchers_by_group' %>
-<% end %>
+<%# content_for :header_tags do %>
+  <%= javascript_include_tag 'watchers_multisel', :plugin => 'redmine_watchers_by_group' %>
+<%# end %>
 <% end %>
