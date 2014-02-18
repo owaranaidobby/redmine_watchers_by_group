@@ -1,4 +1,6 @@
+
 <%if User.current.groups.size > 0%>
+  <%= javascript_include_tag 'watchers_multisel', :plugin => 'redmine_watchers_by_group' %>
 <%#
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
@@ -7,7 +9,8 @@
 <%= l(:watchers_select_multiple) %>
 <%
 roles=""
-@groups = User.current.groups.each do |item|
+user_group = user_group ? user_group : User.current.groups
+@groups = user_group.each do |item|
 key=item.lastname
 value=item.users
 values = value.map do |user|
@@ -22,16 +25,18 @@ end %>
   <input type="submit" value="Unselect All" onclick="return uncheckAll('issue[watcher_user_ids][]')" />
 </p>
 
-<%
-  checkboxes = watchers.map do |user|
-    c = issue.watched_by?(user)
-    tag = check_box_tag 'issue[watcher_user_ids][]', user.id, c, :id => nil
-    content_tag 'label', "#{tag} #{h(user)}", :id => "issue_watcher_user_ids_#{user.id}", :class => "floating"
-  end.join
-%>
-<%= checkboxes if controller.action_name == "show" %>
+<% if controller.action_name == "show" %>
+  <% watchers.each do |user| %>
+    <% c = issue.watched_by?(user) %>
+    <%= label_tag '', class: "floating", id: "issue_watcher_user_ids_#{user.id}" do %>
+      <%= check_box_tag 'issue[watcher_user_ids][]', user.id, c, :id => nil %>
+      <%= "#{h(user)}" %>
+    <% end %>
+  <% end %>
+
+<% end %>
 
 <%# content_for :header_tags do %>
-  <%= javascript_include_tag 'watchers_multisel', :plugin => 'redmine_watchers_by_group' %>
+
 <%# end %>
 <% end %>

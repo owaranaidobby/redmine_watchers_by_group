@@ -21,6 +21,11 @@ module Redmine_watchers_by_group
     def view_issues_form_details_bottom(context={ })
       context[:watchers] = (context[:issue].project.users.sort + context[:issue].watcher_users).uniq
 
+      user_groups = User.current.groups.map do |group|
+        Group.where(lastname: group.lastname).first
+      end
+      context[:user_group] = user_groups
+
       context[:controller].send(:render_to_string, {
           :partial => 'watchers/multiselect_group',
           :locals => context
